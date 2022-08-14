@@ -2,7 +2,6 @@
 import os
 import pyvista as pv
 import numpy as np
-import pandas
 from mesh_to_DataFrame import meshToDataFrame
 from calc_geo_quants import calcGeoQuant
 

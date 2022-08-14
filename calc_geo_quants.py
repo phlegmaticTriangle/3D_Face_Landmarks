@@ -1,9 +1,6 @@
 # imports
-import pyvista as pv
 import numpy as np
-import scipy as sp
 import scipy.stats 
-from scipy import spatial
 
 def calcGeoQuant(mesh):
     '''
