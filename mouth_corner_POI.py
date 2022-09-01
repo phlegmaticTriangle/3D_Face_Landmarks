@@ -90,7 +90,7 @@ def landmark_54(mesh):
 
 if __name__ == "__main__":
     # test
-    mesh_path = os.path.join("face_scans", "Sheba_Rest.stl")
+    mesh_path = os.path.join("face_scans", "demo.stl")
     mesh = pv.read(mesh_path)
     unnormal_mesh, normal_mesh = calcGeoQuant(mesh)
     left_poi, right_poi = outerMouthPOI(unnormal_mesh)

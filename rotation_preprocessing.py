@@ -248,7 +248,7 @@ if __name__ == "__main__":
     ## test orient mesh
 
     # get mesh
-    mesh_path = os.path.join("face_scans", "Sheba_Rest.stl")
+    mesh_path = os.path.join("face_scans", "demo.stl")
     mesh = pv.read(mesh_path)
 
     # randomize its orientations
