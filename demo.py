@@ -13,7 +13,7 @@ from mouth_corner_POI import landmark_54
 from landmark_refinement import refineLandmark
 
 
-def main(mesh_path = os.path.join("face_scans", "Maged_Rest_clipped.stl"), reorient = False):
+def main(mesh_path = os.path.join("face_scans", "demo.stl"), reorient = False):
     '''
     Given the path of a face scan, this function will find five landmarks on the face scan: the pronasal, the endocanthions, 
     and the cheilions. If reorient is True, the function will try to orient the face mesh into the canonical position first.
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     ## parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--reorient", help="calls program to orient face into standard orientation", action="store_true", default=False)
-    parser.add_argument("--mesh", help="specifies the path to the face mesh", default=os.path.join("face_scans", "Maged_Rest_clipped.stl"))
+    parser.add_argument("--mesh", help="specifies the path to the face mesh", default=os.path.join("face_scans", "demo.stl"))
     args = parser.parse_args()
     ## call main
     main(args.mesh, args.reorient)

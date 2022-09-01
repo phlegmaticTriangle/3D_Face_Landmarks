@@ -15,8 +15,9 @@ def innerEyePOI(mesh):
     ## numerical constants
     min_y = 7.5 # controls min dist above nosetip_y of POI
     max_y = 30 # controls max dist above nosetip_y of POI
+    max_x = 30 # controls max dist away from nosetip_x of POI
     max_S = -0.375 # controls maximum S of POI
-    filter_ratio = 0.1 # controls proportion of points that pass through filter for low first derivative magnitude
+    filter_ratio = 0.5 # controls proportion of points that pass through filter for low first derivative magnitude
     prop_poi = 1/1000 # controls the number of POI returned in the end
     num_poi = int(mesh.points.shape[0] * prop_poi)
 
@@ -30,19 +31,24 @@ def innerEyePOI(mesh):
     nosetip_x = nosetip[0]
     nosetip_y = nosetip[1]
 
-    ## inner eye must be sufficiently far from nose in x and y directions
-    # y_range
+    ## inner eye must have correct x and y coordinates
+    # x_range and y_range
     y = mesh_data.loc[:,'y']
+    x = mesh_data.loc[:, 'x']
     y_range = np.nanmax(y) - np.nanmin(y)
+    x_range = np.nanmax(x) - np.nanmin(x)
 
-    # get points that are min_y% of y_range away from nosetip_y
+    # get points that are within range
     min_y_dist = min_y / 100 * y_range
     max_y_dist = max_y / 100 * y_range
+    max_x_dist = max_x / 100 * x_range
 
     y_dist = np.abs(y - nosetip_y)
+    x_dist = np.abs(x - nosetip_x)
 
     y_far_enough = np.where(y_dist > min_y_dist, True, False)
     y_not_too_far = np.where(y_dist < max_y_dist, True, False)
+    x_not_too_far = np.where(x_dist < max_x_dist, True, False)
     y_correct_dist = np.logical_and(y_far_enough, y_not_too_far)
 
     ## inner eye must be above the nose tip in y direction
@@ -54,6 +60,7 @@ def innerEyePOI(mesh):
     ## get points that meet above requirments
     init_filter = np.logical_and(y_correct_dist, above_nosetip)
     init_filter = np.logical_and(init_filter, S_filter)
+    init_filter = np.logical_and(init_filter, x_not_too_far)
 
     mesh_data = mesh_data.iloc[init_filter]
 
@@ -105,7 +112,7 @@ def landmark_42(mesh):
 
 if __name__ == "__main__":
     # test 
-    mesh_path = os.path.joing("face_scans", "Serag_Rest.stl")
+    mesh_path = os.path.join("face_scans", "demo.stl")
     mesh = pv.read(mesh_path)
     unnormal_mesh, normal_mesh = calcGeoQuant(mesh)
     left_poi, right_poi = innerEyePOI(unnormal_mesh)
